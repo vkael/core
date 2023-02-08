@@ -1661,8 +1661,11 @@ class FeatureContext extends BehatVariablesContext {
 	 * @return object
 	 */
 	public function getJsonDecodedResponseBodyContent():?object {
-		$this->response->getBody()->rewind();
-		return json_decode($this->response->getBody()->getContents());
+		if ($this->response !== null) {
+			$this->response->getBody()->rewind();
+			return json_decode($this->response->getBody()->getContents());
+		}
+		return null;
 	}
 
 	/**
@@ -3046,20 +3049,6 @@ class FeatureContext extends BehatVariablesContext {
 		return \json_decode(
 			(string) $response->getBody(),
 			true
-		);
-	}
-
-	/**
-	 * @param ResponseInterface|null $response
-	 *
-	 * @return array
-	 */
-	public function getJsonDecodedResponse1(?ResponseInterface $response = null) {
-		if ($response === null) {
-			$response = $this->getResponse();
-		}
-		return \json_decode(
-			(string) $response->getBody(),
 		);
 	}
 
